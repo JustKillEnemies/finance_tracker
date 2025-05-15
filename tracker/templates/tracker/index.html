@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Все операции пользователя</h1>
+{% for op in operations%}
+    <li>Операция: {{op}}</li>
+{% endfor%}
+{% endblock %}

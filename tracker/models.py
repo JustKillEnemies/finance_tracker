@@ -34,3 +34,12 @@ class Category(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+
+class ContextMenu(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Название")
+    url_name = models.CharField(max_length=100, verbose_name="Url")
+
+    def __str__(self):
+        return self.title
+
