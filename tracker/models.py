@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class Operation(models.Model):
@@ -26,6 +27,9 @@ class Operation(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('home')
+
 
 # модель категорий
 class Category(models.Model):
@@ -34,6 +38,9 @@ class Category(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+    def get_absolute_url(self):
+        return reverse('home')
 
 
 class ContextMenu(models.Model):
