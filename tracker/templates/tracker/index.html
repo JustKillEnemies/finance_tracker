@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 {% extends 'base.html' %}
+<html>
+<body>
+    {% block content %}
+    {% if view == "all" %}
+    <h1>Все операции пользователя</h1>
+    {% elif view == "incomes" %}
+    <h1>Все доходы пользователя</h1>
+    {% elif view == "expenses" %}
+    <h1>Все расходы пользователя</h1>
+    {% endif %}
 
-{% block content %}
-<h1>Все операции пользователя</h1>
-{% for op in operations%}
-    <li>Операция: {{op}}</li>
-{% endfor%}
-{% endblock %}
+    {% for op in operations %}
+        <ul>Операция: {{op}}</ul>
+    {% endfor %}
+    {% endblock %}
+</body>
+</html>

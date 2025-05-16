@@ -3,9 +3,9 @@ from . import views
 
 urlpatterns = [
     path('', views.TrackerHome.as_view(), name='home'),
-    # path('operations/', views.operations, name='all_operations'),
-    path('incomes/', views.incomes, name='incomes'),
-    path('expenses/', views.expenses, name='expenses'),
+    path('operations/', views.AllOperations.as_view(), name='all_operations'),
+    path('incomes/', views.Incomes.as_view(), name='incomes'),
+    path('expenses/', views.Expenses.as_view(), name='expenses'),
     path('visual-report/', views.visual_report, name='visual_report'),
     path('feedback/', views.feedback, name='feedback'),
     path('create-operation/', views.CreateOperation.as_view(), name='create_operation'),
