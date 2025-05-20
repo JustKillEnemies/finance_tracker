@@ -2,23 +2,37 @@
 <html>
 <head>
     {% load static %}
+    <link rel="shortcut icon" href="{% static 'tracker/images/finance.ico' %}" type="image/x-icon"/>
     <link href="{% static 'tracker/css/styles.css' %}" rel="stylesheet" />
 </head>
-<header>
-    <div class="logo">Мой сайт</div>
+<body>
+<header class="header">
     <nav class="navigation">
-<ul>
+    <img src="{% static 'tracker/images/finance.png' %}" alt="Лого" class="corner-icon" >
+<ul class="main-menu">
     {% for item in mainmenu %}
     <li><a href="{% url item.url_name %}">{{ item.title }}</a></li>
     {% endfor %}
 </ul>
         </nav>
+
 </header>
-<body>
+<div class="container">
+    <aside class="sidebar">
+        <h3>Категории:</h3>
+      <ul>
+        <li><a href="#">Пункт 1</a></li>
+        <li><a href="#">Пункт 2</a></li>
+        <li><a href="#">Пункт 3</a></li>
+      </ul>
+    </aside>
 
+        <main class="main-content">
+      <!-- основной контент страницы -->
+      {% block content %}
+      {% endblock %}
+    </main>
+</div>
 
-{% block content %}
-
-{% endblock %}
 </body>
 </html>
