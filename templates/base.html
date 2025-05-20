@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html>
-{% block mainmenu %}
+<head>
+    {% load static %}
+    <link href="{% static 'tracker/css/styles.css' %}" rel="stylesheet" />
+</head>
+<header>
+    <div class="logo">Мой сайт</div>
+    <nav class="navigation">
 <ul>
     {% for item in mainmenu %}
-    <a href="{% url item.url_name %}">{{ item.title }}</a>
+    <li><a href="{% url item.url_name %}">{{ item.title }}</a></li>
     {% endfor %}
 </ul>
-{% endblock %}
+        </nav>
+</header>
+<body>
+
 
 {% block content %}
 
 {% endblock %}
+</body>
 </html>

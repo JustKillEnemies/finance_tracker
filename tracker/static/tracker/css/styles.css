@@ -1,0 +1,13 @@
+.navigation {
+    font-weight:bold;
+    margin-left: 50px;
+    marign-right: auto;
+
+
+}
+nav ul {
+    display: flex;
+    gap: 15px;
+    list-style-type: none;
+
+}
