@@ -5,9 +5,9 @@ from django.urls import reverse
 
 class Operation(models.Model):
     class TypeOfMethod(models.IntegerChoices):
-        CARD = 0, "Оплата картой"
-        CASH = 1, "Оплата наличными"
-        QR = 2, "Оплата QR-кодом"
+        CARD = 0, "Банковская карта"
+        CASH = 1, "Наличные"
+        QR = 2, "QR-код"
         SBP = 3, "СБП перевод"
 
     class TransactionType(models.IntegerChoices):
@@ -18,7 +18,7 @@ class Operation(models.Model):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='Слаг')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     time_update = models.DateTimeField(auto_now=True, verbose_name='Время изменения')
-    amount = models.FloatField(blank=False)
+    amount = models.FloatField(blank=False, verbose_name='Сумма')
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True, verbose_name='Категория', related_name="operations")
     method = models.PositiveSmallIntegerField(choices=TypeOfMethod.choices, default=TypeOfMethod.CARD, verbose_name='Метод оплаты')
     type = models.PositiveSmallIntegerField(choices=TransactionType.choices, default=TransactionType.EXPENSE, verbose_name='Тип операции')

@@ -2,19 +2,45 @@
 {% extends 'base.html' %}
 <html>
 <body>
-
     {% block content %}
-    {% if view == "all" %}
-    <h1>Все операции пользователя</h1>
-    {% elif view == "incomes" %}
-    <h1>Все доходы пользователя</h1>
-    {% elif view == "expenses" %}
-    <h1>Все расходы пользователя</h1>
-    {% endif %}
 
-    {% for op in operations %}
-        <ul>Операция: {{op}}</ul>
-    {% endfor %}
+    <div class="table-container">
+        <table border="3" class="operations-table">
+            <caption>
+                {% if view == "all" %}
+                    <h3>Все операции пользователя</h3>
+                {% elif view == "incomes" %}
+                    <h3>Все доходы пользователя</h3>
+                {% elif view == "expenses" %}
+                    <h3>Все расходы пользователя</h3>
+                {% endif %}
+            </caption>
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Сумма</th>
+                    <th>Категория</th>
+                    <th>Метод оплаты</th>
+                    <th>Тип операции</th>
+                    <th>Изменить запись</th>
+                    <th>Удалить запись</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for operation in operations %}
+                <tr>
+                    <td>{{ operation.name }}</td>
+                    <td>{{ operation.amount }} руб.</td>
+                    <td>{{ operation.category.name }}</td>
+                    <td>{{ operation.get_method_display }}</td>
+                    <td>{{ operation.get_type_display }}</td>
+                    <td><button type="button"><a href="{% url 'update_operation' operation.slug %}">Изменить</a></button></td>
+                    <td><button type="button"><a href="{% url 'delete_operation' operation.slug %}">Удалить</a></button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {% endblock %}
 </body>
 </html>

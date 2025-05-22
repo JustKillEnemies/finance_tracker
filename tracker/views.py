@@ -8,10 +8,11 @@ from django.urls import reverse_lazy
 
 
 class TrackerHome(TemplateView):
-    template_name = 'mainpage.html'
+    template_name = 'base.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
         return context
 
 
@@ -30,12 +31,22 @@ class CreateOperation(CreateView):
         obj.user = self.request.user
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
 
 class CreateCategory(CreateView):
     model = Category
     fields = ['name']
     template_name = 'tracker/create.html'
     extra_context = {'title': 'Создание категории'}
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
     def form_valid(self, form):
         obj = form.save(commit=False)
@@ -78,7 +89,7 @@ class DeleteOperation(DeleteView):
 class UpdateCategory(UpdateView):
     model = Category
     fields = ['name']
-    template_name = 'tracker/create.html'
+    template_name = 'tracker/update.html'
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
@@ -92,7 +103,7 @@ class UpdateCategory(UpdateView):
 class UpdateOperation(UpdateView):
     model = Operation
     fields = ['name', 'amount', 'method', 'type', 'category']
-    template_name = 'tracker/create.html'
+    template_name = 'tracker/update.html'
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
@@ -109,10 +120,13 @@ class AllOperations(ListView):
 
     def get_queryset(self):
         return Operation.objects.all()
+        # return Operation.objects.all().values('name', 'amount', 'type', 'category')
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['view'] = 'all'
+        context['categories'] = Category.objects.all()
         return context
 
 
@@ -126,6 +140,7 @@ class Incomes(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['view'] = 'incomes'
+        context['categories'] = Category.objects.all()
         return context
 
 
@@ -139,6 +154,7 @@ class Expenses(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['view'] = 'expenses'
+        context['categories'] = Category.objects.all()
         return context
 
 

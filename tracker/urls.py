@@ -1,6 +1,8 @@
 from django.urls import path, include, re_path, register_converter
 from . import views
 
+# app_name = 'tracker'
+
 urlpatterns = [
     path('', views.TrackerHome.as_view(), name='home'),
     path('operations/', views.AllOperations.as_view(), name='all_operations'),

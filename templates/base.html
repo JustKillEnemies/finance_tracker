@@ -8,31 +8,35 @@
 <body>
 <header class="header">
     <nav class="navigation">
-    <img src="{% static 'tracker/images/finance.png' %}" alt="Лого" class="corner-icon" >
-<ul class="main-menu">
-    {% for item in mainmenu %}
-    <li><a href="{% url item.url_name %}">{{ item.title }}</a></li>
-    {% endfor %}
-</ul>
-        </nav>
-
+        <a href="{% url 'home' %}"><img src="{% static 'tracker/images/finance.png' %}" alt="Лого" class="corner-icon" ></a>
+        <ul class="main-menu">
+            {% for item in mainmenu %}
+            <li><a href="{% url item.url_name %}">{{ item.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
 </header>
 <div class="container">
     <aside class="sidebar">
         <h3>Категории:</h3>
-      <ul>
-        <li><a href="#">Пункт 1</a></li>
-        <li><a href="#">Пункт 2</a></li>
-        <li><a href="#">Пункт 3</a></li>
-      </ul>
+        {% if categories %}
+
+            <ul class="category-list">
+                {% for cat in categories %}
+
+                <li>{{ cat.name }} <button type="button"><a href="{% url 'update_category' cat.slug %}">Изменить</a></button>
+                <button type="button"><a href="{% url 'delete_category' cat.slug %}">Удалить</a></button></li>
+                                {% endfor %}
+            </ul>
+        {% endif %}
     </aside>
 
-        <main class="main-content">
-      <!-- основной контент страницы -->
-      {% block content %}
-      {% endblock %}
+    <main class="main-content">
+        {% block content %}
+        <button type="button"><a href="{% url 'create_operation' %}">Добавить операцию</a></button>
+        <button type="button"><a href="{% url 'create_category' %}">Добавить категорию</a></button>
+        {% endblock %}
     </main>
 </div>
-
 </body>
 </html>

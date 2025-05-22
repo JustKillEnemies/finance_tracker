@@ -1,3 +1,8 @@
+html {
+    color: #000000;
+
+}
+
 .navigation {
     font-weight: bold;
     margin-left: 50px;
@@ -9,39 +14,38 @@
     background-color: #f0f0f0;
     padding: 10px;
     margin-top: -10px;
-    width:100%;
+    width: 100%;
 }
 
-}
 nav ul {
     display: flex;
     list-style-type: none;
-    font-weight:bold;
+    font-weight: bold;
     margin: 0;
     padding: 0;
-
 }
 
 .corner-icon {
-    position:fixed;
-    top:0px;
-    left:0px;
-    width:100px;
-    height:65px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100px;
+    height: 65px;
 }
 
 .main-menu {
-    font-weight:bold;
+    font-weight: bold;
     font-size: 16px;
     font-family: 'Georgia';
-    gap:30px;
+    gap: 30px;
     display: flex;
     margin-top: 15px;
-    margin-left: auto;
+    margin-left: 40px;
     margin-right: auto;
 }
+
 .main-menu li {
-list-style: none;
+    list-style: none;
 }
 
 a {
@@ -50,7 +54,7 @@ a {
 }
 
 .container {
-    display:flex;
+    display: flex;
     min-height: 100vh;
 }
 
@@ -58,8 +62,49 @@ a {
     background-color: #f0f0f0;
     padding: 20px;
     margin-left: -10px;
-    font-weight:bold;
+    font-weight: bold;
     font-size: 14px;
     font-family: 'Georgia';
+}
 
+.table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 1400px;
+
+}
+
+.operations-table {
+    width: 100%;
+    margin: 10px auto;
+    border-collapse: collapse;
+}
+
+.operations-table caption {
+    caption-side: top;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.operations-table caption h3 {
+    margin: 0;
+}
+
+.operations-table td,
+.operations-table th {
+    font-family: 'Georgia';
+    font-size: 18px;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+
+.sidebar ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.container button {
 }
