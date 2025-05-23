@@ -53,6 +53,7 @@ class CreateCategory(CreateView):
         base_slug = slugify(obj.name)
         count = Category.objects.filter(slug__startswith=base_slug).count()
         obj.slug = f"{base_slug}{count + 1}" if count else base_slug
+        obj.user_id = self.request.user.id
         return super().form_valid(form)
 
 

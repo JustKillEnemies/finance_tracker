@@ -14,6 +14,7 @@
             <li><a href="{% url item.url_name %}">{{ item.title }}</a></li>
             {% endfor %}
         </ul>
+        <a href="{% url 'users:register' %}">Регистрация</a> | <a href="{% url 'users:login' %}">Войти</a>
     </nav>
 </header>
 <div class="container">

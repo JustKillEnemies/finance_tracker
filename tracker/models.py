@@ -35,6 +35,7 @@ class Operation(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название категории')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='Слаг')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь',)
 
     def __str__(self):
         return f"{self.name}"
