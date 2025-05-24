@@ -5,18 +5,15 @@ from django.http import HttpResponse
 from django.views.generic import CreateView, DeleteView, UpdateView, TemplateView
 from slugify import slugify
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .mixins import TrackerMixin, CategoriesMixin
 
 
-class TrackerHome(TemplateView):
+class TrackerHome(TrackerMixin, TemplateView):
     template_name = 'base.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
-        return context
 
-
-class CreateOperation(CreateView):
+class CreateOperation(LoginRequiredMixin, TrackerMixin, CategoriesMixin, CreateView):
     model = Operation
     fields = ['name', 'amount', 'method', 'type', 'category']
     title_page = 'Добавление операции'
@@ -31,22 +28,25 @@ class CreateOperation(CreateView):
         obj.user = self.request.user
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
-        return context
+
+    # def get_form(self, form_class=None):
+    #     form = super().get_form(form_class)
+    #     user = self.request.user
+    #     form.fields['category'].queryset = Category.objects.filter(user=user)
+    #
+    #     return form
 
 
-class CreateCategory(CreateView):
+class CreateCategory(LoginRequiredMixin, TrackerMixin, CreateView):
     model = Category
     fields = ['name']
     template_name = 'tracker/create.html'
     extra_context = {'title': 'Создание категории'}
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['categories'] = Category.objects.all()
+    #     return context
 
     def form_valid(self, form):
         obj = form.save(commit=False)
@@ -57,41 +57,46 @@ class CreateCategory(CreateView):
         return super().form_valid(form)
 
 
-class DeleteCategory(DeleteView):
+class DeleteCategory(LoginRequiredMixin, TrackerMixin, DeleteView):
     model = Category
     template_name = 'tracker/delete.html'
     success_url = reverse_lazy('home')
     extra_context = {'title': 'Удаление категории'}
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+    def get_queryset(self):
+        return Category.objects.filter(user=self.request.user)
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
         return response
 
 
-class DeleteOperation(DeleteView):
+class DeleteOperation(LoginRequiredMixin, DeleteView):
     model = Operation
     template_name = 'tracker/delete.html'
     success_url = reverse_lazy('home')
     extra_context = {'title': 'Удаление операции'}
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+    def get_queryset(self):
+        return Operation.objects.filter(user=self.request.user)
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     return context
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
         return response
 
 
-class UpdateCategory(UpdateView):
+class UpdateCategory(LoginRequiredMixin, TrackerMixin,  UpdateView):
     model = Category
     fields = ['name']
     template_name = 'tracker/update.html'
     success_url = reverse_lazy('home')
+
+    def get_queryset(self):
+        return Category.objects.filter(user=self.request.user)
 
     def form_valid(self, form):
         obj = form.save(commit=False)
@@ -101,11 +106,14 @@ class UpdateCategory(UpdateView):
         return super().form_valid(form)
 
 
-class UpdateOperation(UpdateView):
+class UpdateOperation(LoginRequiredMixin, TrackerMixin, CategoriesMixin,  UpdateView):
     model = Operation
     fields = ['name', 'amount', 'method', 'type', 'category']
     template_name = 'tracker/update.html'
     success_url = reverse_lazy('home')
+
+    def get_queryset(self):
+        return Operation.objects.filter(user=self.request.user)
 
     def form_valid(self, form):
         obj = form.save(commit=False)
@@ -115,48 +123,45 @@ class UpdateOperation(UpdateView):
         return super().form_valid(form)
 
 
-class AllOperations(ListView):
+class AllOperations(LoginRequiredMixin, TrackerMixin, ListView):
     template_name = 'tracker/index.html'
     context_object_name = 'operations'
 
     def get_queryset(self):
-        return Operation.objects.all()
+        return Operation.objects.filter(user_id=self.request.user.id)
         # return Operation.objects.all().values('name', 'amount', 'type', 'category')
 
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['view'] = 'all'
-        context['categories'] = Category.objects.all()
-        return context
 
 
-class Incomes(ListView):
+
+class Incomes(LoginRequiredMixin, TrackerMixin, ListView):
     template_name = 'tracker/index.html'
     context_object_name = 'operations'
-
+    extra_context = {'view': 'incomes'}
     def get_queryset(self):
-        return Operation.objects.filter(type=1) # 1 = доход
+        return Operation.objects.filter(type=1, user_id=self.request.user.id) # 1 = доход
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['view'] = 'incomes'
-        context['categories'] = Category.objects.all()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['view'] = 'incomes'
+    #     context['categories'] = Category.objects.all()
+    #     return context
 
 
-class Expenses(ListView):
+class Expenses(LoginRequiredMixin, TrackerMixin, ListView):
     template_name = 'tracker/index.html'
     context_object_name = 'operations'
+    extra_context = {'view': 'expenses'}
 
     def get_queryset(self):
-        return Operation.objects.filter(type=0) # 1 = доход
+        return Operation.objects.filter(type=0, user_id=self.request.user.id) # 1 = доход
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['view'] = 'expenses'
-        context['categories'] = Category.objects.all()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['view'] = 'expenses'
+    #     context['categories'] = Category.objects.all()
+    #     return context
 
 
 

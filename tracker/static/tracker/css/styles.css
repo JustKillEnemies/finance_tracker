@@ -8,8 +8,8 @@ html {
     margin-left: 150px;
     margin-right: 0;
     margin-top: 0;
-    justify-content: space-between; /* Added to push auth-container to the right */
-    align-items: center; /* Vertically center items */
+    justify-content: space-between;
+    align-items: center;
 }
 
 .main-menu {
@@ -37,10 +37,11 @@ html {
 
 .corner-icon {
     position: absolute;
+    margin-right:auto;
     top: 0px;
     left: 0px;
     width: 100px;
-    height: 65px;
+    height: 80px;
 }
 
 a {
