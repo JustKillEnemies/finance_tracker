@@ -14,7 +14,23 @@
             <li><a href="{% url item.url_name %}">{{ item.title }}</a></li>
             {% endfor %}
         </ul>
-        <a href="{% url 'users:register' %}">Регистрация</a> | <a href="{% url 'users:login' %}">Войти</a>
+
+    <div class="auth-container">
+        <ul class="auth-menu">
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'users:profile' %}">{{ user.username }}</a> |
+                <form method="post" action="{% url 'users:logout' %}" style="display: inline">
+                    {% csrf_token %}
+                    <button type="submit">
+                        Выйти
+                    </button>
+                </form>
+            </li>
+            {% else %}
+            <li><a href="{% url 'users:register' %}">Регистрация</a> | <a href="{% url 'users:login' %}">Войти</a></li>
+        {% endif %}
+            </ul>
+    </div>
     </nav>
 </header>
 <div class="container">
@@ -22,7 +38,7 @@
         <h3>Категории:</h3>
         {% if categories %}
 
-            <ul class="category-list">
+            <ul>
                 {% for cat in categories %}
 
                 <li>{{ cat.name }} <button type="button"><a href="{% url 'update_category' cat.slug %}">Изменить</a></button>
@@ -32,7 +48,7 @@
         {% endif %}
     </aside>
 
-    <main class="main-content">
+    <main>
         {% block content %}
         <button type="button"><a href="{% url 'create_operation' %}">Добавить операцию</a></button>
         <button type="button"><a href="{% url 'create_category' %}">Добавить категорию</a></button>
@@ -41,3 +57,4 @@
 </div>
 </body>
 </html>
+
