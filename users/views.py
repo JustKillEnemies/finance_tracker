@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import CreateView, UpdateView
-from .forms import RegisterUserForm, LoginUserForm, ProfileUserForm
+from .forms import RegisterUserForm, LoginUserForm, ProfileUserForm, UserPasswordChangeForm
 from django.urls import reverse_lazy
-from django.contrib.auth.views import LogoutView, PasswordChangeView, LoginView
+from django.contrib.auth.views import LogoutView, PasswordChangeView, LoginView, PasswordChangeDoneView
 from django.contrib.auth import get_user_model
 
 
@@ -33,3 +33,16 @@ class ProfileUser(UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+class UserPasswordChange(PasswordChangeView):
+    form_class = UserPasswordChangeForm
+    template_name = 'users/password_change_form.html'
+    # success_url = reverse_lazy("users:profile")
+    success_url = reverse_lazy("users:password_change_done")
+
+
+
+
+# class UserPasswordChangeDone(PasswordChangeDoneView):
+#     template_name = 'users/password_change_done.html'
