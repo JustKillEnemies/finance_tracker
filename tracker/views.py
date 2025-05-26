@@ -168,6 +168,6 @@ class Expenses(LoginRequiredMixin, TrackerMixin, ListView):
 def visual_report(request):
     return HttpResponse("Визуальный отчет")
 
-def feedback(request):
-    return HttpResponse("Фидбэк")
+# def feedback(request):
+#     return HttpResponse("Фидбэк")
 

@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 
 import users.apps
-from config import get_db_data, get_email_data
+from config import get_db_data, get_email_data, get_secret_key
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_2d5@c+1x5@si1n(t7k8gqnpsr1(-kut+bf@_=d_nsz&_vws_#'
+SECRET_KEY = get_secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -128,7 +128,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-   os.path.join(BASE_DIR, "static"),
+   BASE_DIR / "static"
 ]
 
 # Default primary key field type

@@ -3,5 +3,5 @@ menu = [
     {"title": "Доходы", "url_name": "incomes"},
     {"title": "Расходы", "url_name": "expenses"},
     {"title": "Визуальный отчет", "url_name": "visual_report"},
-    {"title": "Обратная связь", "url_name": "feedback"},
+    {"title": "Обратная связь", "url_name": "users:feedback"},
 ]
