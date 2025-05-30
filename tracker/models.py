@@ -47,6 +47,7 @@ class Category(models.Model):
 class ContextMenu(models.Model):
     title = models.CharField(max_length=100, verbose_name="Название")
     url_name = models.CharField(max_length=100, verbose_name="Url")
+    order = models.IntegerField(null=True, blank=True, verbose_name='sort_order', default=1)
 
     def __str__(self):
         return self.title

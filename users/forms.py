@@ -3,6 +3,10 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LogoutView, PasswordChangeForm
 from .models import Feedback
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Checkbox
+from fintrack import settings
+
 
 class LoginUserForm(AuthenticationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
@@ -17,6 +21,8 @@ class RegisterUserForm(UserCreationForm):
     username = forms.CharField(label="Логин", widget=forms.TextInput(attrs={'class': 'form-input'}))
     password1 = forms.CharField(label="Пароль", widget=forms.PasswordInput(attrs={'class': 'form-input'}))
     password2 = forms.CharField(label="Повтор пароля", widget=forms.PasswordInput(attrs={'class': 'form-input'}))
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox, public_key=settings.RECAPTCHA_PUBLIC_KEY,
+                               private_key=settings.RECAPTCHA_PRIVATE_KEY, label='ReCAPTCHA')
 
     class Meta:
         model = get_user_model()
@@ -63,6 +69,8 @@ class UserPasswordChangeForm(PasswordChangeForm):
     new_password1 = forms.CharField(label="Новый пароль", widget=forms.PasswordInput(attrs={'class': 'form-input'}))
     new_password2 = forms.CharField(label="Подтверждение пароля",
                                     widget=forms.PasswordInput(attrs={'class': 'form-input'}))
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox, public_key=settings.RECAPTCHA_PUBLIC_KEY,
+                               private_key=settings.RECAPTCHA_PRIVATE_KEY, label='ReCAPTCHA')
 
 
 class FeedbackCreateForm(forms.ModelForm):

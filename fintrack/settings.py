@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 
 import users.apps
-from config import get_db_data, get_email_data, get_secret_key
+from config import get_db_data, get_email_data, get_secret_key, get_kaptcha
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tracker.apps.TrackerConfig',
     'users.apps.UsersConfig',
+    'django_recaptcha',
 ]
 
 MIDDLEWARE = [
@@ -152,3 +153,5 @@ EMAIL_HOST_PASSWORD, EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_USE_TLS = ge
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
+
+RECAPTCHA_PUBLIC_KEY, RECAPTCHA_PRIVATE_KEY = get_kaptcha()

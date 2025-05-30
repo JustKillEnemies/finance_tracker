@@ -7,6 +7,7 @@ from slugify import slugify
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .mixins import TrackerMixin, CategoriesMixin
+from django.contrib.auth.decorators import login_required
 
 
 class TrackerHome(TrackerMixin, TemplateView):
@@ -80,9 +81,7 @@ class DeleteOperation(LoginRequiredMixin, DeleteView):
     def get_queryset(self):
         return Operation.objects.filter(user=self.request.user)
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     return context
+
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
@@ -157,17 +156,37 @@ class Expenses(LoginRequiredMixin, TrackerMixin, ListView):
     def get_queryset(self):
         return Operation.objects.filter(type=0, user_id=self.request.user.id) # 1 = доход
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['view'] = 'expenses'
-    #     context['categories'] = Category.objects.all()
-    #     return context
 
 
 
+@login_required
 def visual_report(request):
-    return HttpResponse("Визуальный отчет")
+    op_type = request.GET.get('type', 'expense')
+    chart_type = request.GET.get('chart', 'bar')
 
-# def feedback(request):
-#     return HttpResponse("Фидбэк")
+    if op_type == 'income':
+        type_value = Operation.TransactionType.INCOME
+        op_type_label = "Доходы"
+    else:
+        type_value = Operation.TransactionType.EXPENSE
+        op_type_label = "Расходы"
+
+    operations = Operation.objects.filter(user=request.user, type=type_value)
+
+    data = {}
+    for op in operations:
+        cat_name = op.category.name if op.category else "Без категории"
+        data[cat_name] = data.get(cat_name, 0) + op.amount
+
+    labels = list(data.keys())
+    values = list(data.values())
+
+    return render(request, 'tracker/visual_report.html', {
+        'labels': labels,
+        'values': values,
+        'title': "Отчет по операциям",
+        'op_type_label': op_type_label,
+        'chart_type': chart_type
+    })
+
 

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+
+<form method="get" action="{% url 'visual_report' %}">
+    <label for="type">Тип операции:</label>
+    <select name="type" id="type">
+        <option value="expense" {% if request.GET.type == "expense" or not request.GET.type %}selected{% endif %}>Расходы</option>
+        <option value="income" {% if request.GET.type == "income" %}selected{% endif %}>Доходы</option>
+    </select>
+
+    <label for="chart">Тип графика:</label>
+    <select name="chart" id="chart">
+        <option value="bar" {% if request.GET.chart == "bar" or not request.GET.chart %}selected{% endif %}>Столбчатая</option>
+        <option value="pie" {% if request.GET.chart == "pie" %}selected{% endif %}>Круговая</option>
+    </select>
+
+    <button type="submit">Построить</button>
+</form>
+
+
+<canvas id="myChart" width="400" height="200"></canvas>
+
+<!-- Подключение Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const labels = {{ labels|safe }};
+    const values = {{ values|safe }};
+    const chartType = "{{ chart_type|default:'bar' }}";  // Тип из Django
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+    new Chart(ctx, {
+        type: chartType,  // используем динамический тип
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '{{ op_type_label|default:"Значения" }}',
+                data: values,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: chartType === 'pie' || chartType === 'doughnut' // в столбчатых можно отключить
+                }
+            },
+            scales: chartType === 'bar' || chartType === 'line' ? {
+                y: { beginAtZero: true }
+            } : {}
+        }
+    });
+</script>
+
+{% endblock %}
