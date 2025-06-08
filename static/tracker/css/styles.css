@@ -1,0 +1,151 @@
+html {
+    color: #000000;
+}
+
+.navigation {
+    display: flex;
+    font-weight: bold;
+    margin-left: 150px;
+    margin-right: 0;
+    margin-top: 0;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main-menu {
+    font-weight: bold;
+    font-size: 20px;
+    font-family: 'Georgia';
+    gap: 30px;
+    display: flex;
+    margin-top: 15px;
+    margin-left: 0px;
+    margin-right: 20px;
+    list-style-type: none;
+}
+
+.main-menu li {
+    list-style: none;
+}
+
+.header {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-top: -10px;
+    width: 100%;
+}
+
+.corner-icon {
+    position: absolute;
+    margin-right:auto;
+    top: 0px;
+    left: 0px;
+    width: 100px;
+    height: 80px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-left: -10px;
+    font-weight: bold;
+    font-size: 14px;
+    font-family: 'Georgia';
+}
+
+.table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 1400px;
+}
+
+.operations-table {
+    width: 100%;
+    margin: 10px auto;
+    border-collapse: collapse;
+}
+
+.operations-table caption {
+    caption-side: top;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.operations-table caption h3 {
+    margin: 0;
+}
+
+.operations-table td,
+.operations-table th {
+    font-family: 'Georgia';
+    font-size: 18px;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+.auth-menu {
+    display: flex;
+    gap: 15px;
+    list-style-type: none;
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.auth-container {
+    margin-left: auto;
+}
+
+.auth-menu form {
+    display: inline;
+}
+.auth-menu button {
+    background: none;
+    border: none;
+    color: black;
+    text-decoration: none;
+    font-size: 18px;
+    font-family: 'Georgia';
+    cursor: pointer;
+    padding: 0;
+}
+
+.form-input {
+    width: 300px;
+    font-size: 16px;
+}
+
+.form-label {
+    display: inline-block;
+    min-width: 150px;
+    vertical-align: top;
+}
+
+.form-error ul {
+    list-style: none;
+    padding: 0;
+    color: #CC0000;
+}
+
+.form-button {
+    min-width: 200px;
+    font-size: 16px;
+}

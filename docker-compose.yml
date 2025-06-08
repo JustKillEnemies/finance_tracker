@@ -1,0 +1,57 @@
+version: "3.12"
+
+services:
+  web:
+    build:
+      context: .
+    command: python manage.py runserver 0.0.0.0:5000
+
+    ports:
+    - "8000:5000"
+    volumes:
+      - fintrack:/myapp/fintrack
+    env_file:
+      - .env
+    environment:
+      - DEBUG=1
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+    networks:
+      - dbnet
+    depends_on:
+      - trackerdb
+
+  trackerdb:
+    image: postgres:16
+    container_name: mydb
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    networks:
+      - dbnet
+
+
+  adminer:
+    image: adminer
+    container_name: my_adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - trackerdb
+    networks:
+      - dbnet
+
+
+
+volumes:
+  fintrack:
+  pgdata:
+
+
+networks:
+  dbnet:
+    driver: bridge
